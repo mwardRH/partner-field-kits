@@ -24,6 +24,4 @@ What event occurs to change the checkpoint date?
 
 # Steps to Rebuild Demo
 
-```bash
-$ yum update -y example
-```
+[Document for rebuild](https://github.com/couchbase-partners/redhat-pds)
