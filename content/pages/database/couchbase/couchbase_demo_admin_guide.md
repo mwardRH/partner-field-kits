@@ -11,16 +11,17 @@ OpenShift | 3.9, and 3.10
 
 Couchbase | Version
 --------- | -------
-Couchbase | number
+Couchbase | 5.5.1-1
+Couchbase Autonomous Operator | 1.0.0-1
 
 
 # Deprication Rules
-Check Point Date?
+Check Point Date? 2019-March-01
 Agree upon retirement checkpoint date? N/A
 What event occurs to change the checkpoint date?
+- RHPDS offers Dynamic Storage for the OpenShift workshops.
+- Wildfly goes GA in OpenShift
 
 # Steps to Rebuild Demo
 
-```bash
-$ yum update -y example
-```
+[Document for rebuild](https://github.com/couchbase-partners/redhat-pds)
