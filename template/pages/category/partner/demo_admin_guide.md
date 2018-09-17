@@ -22,5 +22,5 @@ What event occurs to change the checkpoint date?
 # Steps to Rebuild Demo
 
 ```bash
-$ yum update -y example
+$ echo "WIN"
 ```
