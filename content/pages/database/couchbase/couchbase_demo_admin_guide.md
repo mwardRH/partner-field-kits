@@ -24,4 +24,4 @@ What event occurs to change the checkpoint date?
 
 # Steps to Rebuild Demo
 
-[Document for rebuild](https://github.com/couchbase-partners/redhat-pds)
+
