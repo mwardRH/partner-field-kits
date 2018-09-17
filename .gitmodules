@@ -1,0 +1,3 @@
+[submodule "content/pages/database/couchbase/src"]
+	path = content/pages/database/couchbase/src
+	url = https://github.com/couchbase-partners/redhat-pds.git
