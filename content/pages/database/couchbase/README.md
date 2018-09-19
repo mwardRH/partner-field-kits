@@ -125,11 +125,11 @@ Open the URL outputted by `oc get routes` in your browser and login with:
 
 Navigate to "Servers" to see the server list:
 
-![Basic Couchbase Cluster](img/cb-cluster-basic.png)
+![Basic Couchbase Cluster](https://github.com/couchbase-partners/redhat-pds/blob/master/img/cb-cluster-basic.png)
 
 On the Pods page in OpenShift (https://master.couchbase.openshiftworkshop.com/console/project/operator-example/browse/pods):
 
-![](img/os-cluster-basic.png)
+![](https://github.com/couchbase-partners/redhat-pds/blob/master/img/os-cluster-basic.png)
 
 ### Failover Demo
 
@@ -145,15 +145,15 @@ By deleting the pod, we are destroying one of the Couchbase nodes. At this point
 
 Couchbase recognizes that a node is missing and triggers fail-over:
 
-![](img/failover-1.png)
+![](https://github.com/couchbase-partners/redhat-pds/blob/master/img/failover-1.png)
 
 Couchbase recognizes the new node coming online and begins rebalancing:
 
-![](img/failover-2.png)
+![](https://github.com/couchbase-partners/redhat-pds/blob/master/img/failover-2.png)
 
 The rebalance continues until the cluster is fully healed.
 
-![](img/failover-3.png)
+![](https://github.com/couchbase-partners/redhat-pds/blob/master/img/failover-3.png)
 
 ## Support
 Couchbase Sales Questions: [sales@couchbase.com](mailto:sales@couchbase.com)
