@@ -157,6 +157,9 @@ The rebalance continues until the cluster is fully healed.
 
 ## Support
 > Couchbase Sales Questions: [sales@couchbase.com](mailto:sales@couchbase.com)
+
 > Couchbase Technical Questions: [partners@couchbase.com](mailto:partners@couchbase.com)
+
 > Features or Problems with above: [File a github issue](https://github.com/mwardRH/partner-field-kits/issues)
+
 > RHPDS Questions: [rhpds-admins@redhat.com](mailto:rhpds-admins@redhat.com)
