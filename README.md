@@ -5,4 +5,6 @@ What I am trying to do is deepen our connection with select Red Hat partners by 
 ## Databases Partners
 
 ### Couchbase Field Kit
-[Root Directory](https://github.com/mwardRH/partner-field-kits/tree/master/content/pages/database/couchbase)
+[Documents](https://github.com/mwardRH/partner-field-kits/tree/master/content/pages/database/couchbase)
+
+## Security Partners (Upcoming)
