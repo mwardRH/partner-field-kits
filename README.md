@@ -6,7 +6,7 @@ A Red Hat Partner Field Kit is an evolving ecosystem of demos and other content 
 
 ## Databases Partners
 
-[Couchbase on MiniShift](https://github.com/mwardRH/partner-field-kits/tree/master/content/pages/database/couchbase/README-minishift.md) <br/>
+[Couchbase on MiniShift](https://github.com/mwardRH/partner-field-kits/tree/master/content/pages/database/couchbase/README-minishift.md)  
 [Couchbase for RHPDS](https://github.com/mwardRH/partner-field-kits/tree/master/content/pages/database/couchbase)
 
 ## Security Partners (Upcoming)
