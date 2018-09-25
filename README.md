@@ -1,9 +1,12 @@
 # Partner Field Kits
 
-What I am trying to do is deepen our connection with select Red Hat partners by defining what documents Red Hat field teams and Partner field teams will need to be successful, committing to a "content sprint" to timebox the development of the materials, then taking that material and promoting it. The content that is generated could be used to enhance existing product/solutions conversation.
+A Red Hat Partner Field Kit is an evolving ecosystem of demos and other content that marries partner product with Red Hat products. I work for Red Hat Partners Solutions Business Unit, we create demos that highlight the best of our products to from a solution. Please feel welcome to pull request sponsored or unsponsored partner demos for Red Hat products. 
+
+# OpenShift 
 
 ## Databases Partners
 
-[Couchbase](https://github.com/mwardRH/partner-field-kits/tree/master/content/pages/database/couchbase)
+[Couchbase on MiniShift](https://github.com/mwardRH/partner-field-kits/tree/master/content/pages/database/couchbase/README-minishift.md)
+[Couchbase for RHPDS](https://github.com/mwardRH/partner-field-kits/tree/master/content/pages/database/couchbase)
 
 ## Security Partners (Upcoming)
