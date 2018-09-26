@@ -163,3 +163,12 @@ The rebalance continues until the cluster is fully healed.
 > Features or Problems with above: [File a github issue](https://github.com/mwardRH/partner-field-kits/issues)
 
 > RHPDS Questions: [rhpds-admins@redhat.com](mailto:rhpds-admins@redhat.com)
+
+## Deploy an App
+> App Deployment... coming soon. 
+
+## Cleanup
+
+Delete the cluster before moving onto the next example:
+
+`oc delete -f cluster-basic.yaml`

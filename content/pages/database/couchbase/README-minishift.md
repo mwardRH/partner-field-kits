@@ -152,4 +152,11 @@ The rebalance continues until the cluster is fully healed.
 
 ![](https://github.com/couchbase-partners/redhat-pds/blob/master/img/failover-3.png)
 
-> Deploy App... coming soon. 
+## Deploy an App
+> App Deployment... coming soon. 
+
+## Cleanup
+
+Delete the cluster before moving onto the next example:
+
+`oc delete -f cluster-basic.yaml`
