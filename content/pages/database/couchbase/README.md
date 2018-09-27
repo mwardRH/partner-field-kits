@@ -67,12 +67,20 @@ oc create rolebinding couchbasecluster --clusterrole couchbasecluster --user dev
 
 oc create clusterrolebinding couchbasecluster --clusterrole couchbasecluster --user developer
 
+oadm policy add-role-to-user admin user1 -n operator-example
+
 oc create secret docker-registry rh-catalog --docker-server=registry.connect.redhat.com --docker-username=redcouch --docker-password=openshift --docker-email=redcouchredhat@gmail.com
 
 oc secrets add serviceaccount/couchbase-operator secrets/rh-catalog --for=pull
 oc secrets add serviceaccount/default secrets/rh-catalog --for=pull
 ```
 > You will need to wait about 5 to 10 minutes for the image to pull from the Red Hat registry.
+
+```
+oc login --username=developer
+oc project operator-example
+oc create -f https://raw.githubusercontent.com/couchbase-partners/redhat-pds/86ec177117e43d9cf2254c1fb5ef37c8248bc04a/operator.yaml
+```
 
 ```
 oc create -f https://raw.githubusercontent.com/couchbase-partners/redhat-pds/86ec177117e43d9cf2254c1fb5ef37c8248bc04a/operator.yaml
