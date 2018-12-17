@@ -52,10 +52,11 @@ oc login --username=opentlc-mgr --password=r3dh4t1! https://master.couchbase.ope
 
 oc new-project operator-example
 
-oc create -f https://raw.githubusercontent.com/couchbase-partners/redhat-pds/86ec177117e43d9cf2254c1fb5ef37c8248bc04a/crd.yaml
+oc create -f https://raw.githubusercontent.com/couchbase-partners/redhat-pds/release-1.0/crd.yaml
 
-oc create -f https://raw.githubusercontent.com/couchbase-partners/redhat-pds/86ec177117e43d9cf2254c1fb5ef37c8248bc04a/cluster-role-sa.yaml
-oc create -f https://raw.githubusercontent.com/couchbase-partners/redhat-pds/86ec177117e43d9cf2254c1fb5ef37c8248bc04a/cluster-role-user.yaml
+oc create -f https://raw.githubusercontent.com/couchbase-partners/redhat-pds/release-1.0/cluster-role-sa.yaml
+
+oc create -f https://raw.githubusercontent.com/couchbase-partners/redhat-pds/release-1.0/cluster-role-user.yaml
 
 oc create serviceaccount couchbase-operator --namespace operator-example
 
@@ -79,11 +80,7 @@ oc secrets add serviceaccount/default secrets/rh-catalog --for=pull
 ```
 oc login --username=developer
 oc project operator-example
-oc create -f https://raw.githubusercontent.com/couchbase-partners/redhat-pds/86ec177117e43d9cf2254c1fb5ef37c8248bc04a/operator.yaml
-```
-
-```
-oc create -f https://raw.githubusercontent.com/couchbase-partners/redhat-pds/86ec177117e43d9cf2254c1fb5ef37c8248bc04a/operator.yaml
+oc create -f https://raw.githubusercontent.com/couchbase-partners/redhat-pds/release-1.0/operator.yaml
 ```
 > Note your pods name is partially random, you will have a different name.
 
@@ -95,8 +92,8 @@ couchbase-operator-5bc785c54f-kh6c2   1/1       Running   0          22s
 > **Do not proceed** to the next step until you see the `couchbase-operator` pod has status `RUNNING`. We use the `-w` option to watch the command, hit `ctrl + C` to escape.
 
 ```
-oc create -f https://raw.githubusercontent.com/couchbase-partners/redhat-pds/86ec177117e43d9cf2254c1fb5ef37c8248bc04a/secret.yaml
-oc create -f https://raw.githubusercontent.com/couchbase-partners/redhat-pds/86ec177117e43d9cf2254c1fb5ef37c8248bc04a/cluster-basic.yaml
+oc create -f https://raw.githubusercontent.com/couchbase-partners/redhat-pds/release-1.0/secret.yaml
+oc create -f https://raw.githubusercontent.com/couchbase-partners/redhat-pds/release-1.0/cluster-basic.yaml
 ```
 You should start seeing Couchbase pods appearing immediately. It will take a couple of minutes for the cluster to be ready.
 
@@ -133,11 +130,11 @@ Open the URL outputted by `oc get routes` in your browser and login with:
 
 Navigate to "Servers" to see the server list:
 
-![Basic Couchbase Cluster](https://github.com/couchbase-partners/redhat-pds/blob/master/img/cb-cluster-basic.png)
+![Basic Couchbase Cluster](https://github.com/couchbase-partners/redhat-pds/blob/release-1.0/img/cb-cluster-basic.png)
 
 On the Pods page in OpenShift (https://master.couchbase.openshiftworkshop.com/console/project/operator-example/browse/pods):
 
-![](https://github.com/couchbase-partners/redhat-pds/blob/master/img/os-cluster-basic.png)
+![](https://github.com/couchbase-partners/redhat-pds/blob/release-1.0/img/os-cluster-basic.png)
 
 ### Failover Demo
 
@@ -153,15 +150,15 @@ By deleting the pod, we are destroying one of the Couchbase nodes. At this point
 
 Couchbase recognizes that a node is missing and triggers fail-over:
 
-![](https://github.com/couchbase-partners/redhat-pds/blob/master/img/failover-1.png)
+![](https://github.com/couchbase-partners/redhat-pds/blob/release-1.0/img/failover-1.png)
 
 Couchbase recognizes the new node coming online and begins rebalancing:
 
-![](https://github.com/couchbase-partners/redhat-pds/blob/master/img/failover-2.png)
+![](https://github.com/couchbase-partners/redhat-pds/blob/release-1.0/img/failover-2.png)
 
 The rebalance continues until the cluster is fully healed.
 
-![](https://github.com/couchbase-partners/redhat-pds/blob/master/img/failover-3.png)
+![](https://github.com/couchbase-partners/redhat-pds/blob/release-1.0/img/failover-3.png)
 
 ## Support
 > Couchbase Sales Questions: [sales@couchbase.com](mailto:sales@couchbase.com)
