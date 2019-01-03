@@ -170,7 +170,161 @@ The rebalance continues until the cluster is fully healed.
 > RHPDS Questions: [rhpds-admins@redhat.com](mailto:rhpds-admins@redhat.com)
 
 ## Deploy an App
-> App Deployment... coming soon. 
+### Build and Deploy an App
+
+![](img/couchbase-app-1.png)
+
+> Note: In order to follow this section, you will need a twitter developer account. If you do not have an account, please contact evan.pease@couchbase.com and I will provide temporary credentials.
+
+In order to help demonstrate the Couchbase Autonomous Operator in action, we'll deploy a simple real-time analytics application that ingests tweets from Twitter's API into Couchbase. We will then simulate a node failure and observe how the application and Couchbase respond.
+
+The application is made up of 3 microservices:
+
+1. Tweet Ingester Service - The tweet ingester is a Java application that consumes tweet in real-time from Twitter's APIs into Couchbase.
+2. API Service - The API service is Java application that provides several REST end points for exposing data ingested by the Tweet Ingester Service. Under the hood, it is running SQL queries against Couchbase.
+3. UI Service - The UI service is a simple Node server that serves a React SPA (single page application). The UI provides visualizations of the data provided by the API Service.
+
+#### S2I Setup for Java Applications
+
+First, import the `openjdk18-openshift` image. This is a S2I (source to image) builder. [S2I](https://access.redhat.com/documentation/en-us/red_hat_jboss_middleware_for_openshift/3/html-single/red_hat_java_s2i_for_openshift/index) will allow us to containerize and deploy an application on OpenShift without having to worry about writing a Dockerfile nor any yaml files!
+
+```
+oc import-image registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift --confirm
+```
+
+After importing this image, we'll be able to deploy Java applications straight from source code using Open Shift's `new-app` command.
+
+
+#### Deploy the API Service
+
+First, we'll deploy the API service.
+
+```
+oc new-app registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift:latest~https://github.com/couchbase-partners/redhat-pds.git \
+       -e COUCHBASE_CLUSTER=cb-example \
+       -e COUCHBASE_USER=Administrator \
+       -e COUCHBASE_PASSWORD=password \
+       -e COUCHBASE_TWEET_BUCKET=tweets \
+       --context-dir=cb-rh-twitter/twitter-api \
+       --name=twitter-api
+```
+
+You can watch the build process by running `oc logs -f bc/twitter-api`. Once this is completed it will deploy a pod running the API service.
+
+Now let's expose the API service so it is accessible publicly:
+
+```
+oc expose svc twitter-api
+```
+
+This should create a route to http://twitter-api-operator-example.apps.couchbase-<CLUSTER_ID>.openshiftworkshop.com. Open the URL http://twitter-api-operator-example.apps.couchbase-<CLUSTER_ID>.openshiftworkshop.com/tweetcount in your browser and you should see a number 0 in your browser. This is a simple API endpoint that returns the number of tweets ingested.
+
+#### Deploy the UI Service
+
+Next, we'll deploy the UI service. This service is a simple node server serving up a ReactJS app. For expediency, a Docker image is already built. We can also deploy Docker images directly with the `new-app` command:
+
+```
+oc new-app ezeev/twitter-ui:latest
+```
+
+This will deploy our UI service. Let's expose it so we can access it:
+
+```
+oc expose svc twitter-ui
+```
+
+This should expose a route to http://twitter-ui-operator-example.apps.couchbase-<CLUSTER_ID>.openshiftworkshop.com. Visit this link. You should see a dashboard load **with empty charts**. We will start populating them in the next step after deploying the Tweet Ingester Service.
+
+Now, add the following request parameter to the URL in your browser: `?apiBase=<exposed route to API service>`. The complete URL should look like:
+
+```
+http://twitter-ui-operator-example.apps.couchbase-<CLUSTER_ID>.openshiftworkshop.com?apiBase=http://twitter-api-operator-example.apps.couchbase-<CLUSTER_ID>.openshiftworkshop.com
+```
+
+
+#### Deploy the Tweet Ingester Service
+
+Now that we have our API and UI deployed, we are ready to start ingesting and visualizing twitter data! This is a Java application like the API service, so we will deploy it the exact same way:
+
+```
+oc new-app registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift:latest~https://github.com/couchbase-partners/redhat-pds.git \
+       -e TWITTER_CONSUMER_KEY=YOUR_CONSUMER_KEY \
+       -e TWITTER_CONSUMER_SECRET=YOUR_CONSUMER_SECRET \
+       -e TWITTER_TOKEN=YOUR_TOKEN \
+       -e TWITTER_SECRET=YOUR_SECRET \
+       -e TWITTER_FILTER='#RegisterToVote' \
+       -e COUCHBASE_CLUSTER=cb-example \
+       -e COUCHBASE_USER=Administrator \
+       -e COUCHBASE_PASSWORD=password \
+       -e COUCHBASE_TWEET_BUCKET=tweets \
+       --context-dir=cb-rh-twitter/twitter-streamer \
+       --name=twitter-streamer
+```
+
+You can watch the build with `oc logs -f bc/cb-rh-twitter`. When this is completed you should see a new pod created for the twitter streamer.
+
+At this point you should also see new documents appearing in the tweets bucket in Couchbase, and in the UI at http://twitter-ui-operator-example.apps.couchbase-<CLUSTER_ID>.openshiftworkshop.com/.
+
+### Failover Demo
+
+Now that we have a cluster up with some data, we can demonstrate the operator in action.
+
+First, delete one of the pods:
+
+```
+oc delete pod cb-example-0003
+```
+
+By deleting the pod, we are destroying one of the Couchbase nodes. At this point the operator should take over and try to recover the cluster to our desired state.
+
+Couchbase recognizes that a node is missing and triggers fail-over:
+
+![](img/failover-1.png)
+
+Couchbase recognizes the new node coming online and begins rebalancing:
+
+![](img/failover-2.png)
+
+The rebalance continues until the cluster is fully healed.
+
+![](img/failover-3.png)
+
+### Cleanup
+
+Delete the cluster before moving onto the next example:
+
+```
+oc delete -f cluster-basic.yaml
+```
+
+To remove the twitter streaming app:
+
+```
+oc delete dc twitter-streamer
+oc delete bc twitter-streamer
+oc delete svc twitter-streamer
+```
+
+## Deploy a Cluster with Server Groups Enabled
+
+First, we need to add labels to our OpenShift nodes. Labels are used to tell the Operator which zone a particular node belongs too. In this example, we'll declare the node1 and node2 belong to ServerGroup1. Our node2 and node3 will belong to ServerGroup2.
+
+```
+ oc label --overwrite nodes node1.couchbase.internal server-group.couchbase.com/zone=ServerGroup1
+ oc label --overwrite nodes node2.couchbase.internal server-group.couchbase.com/zone=ServerGroup1
+ oc label --overwrite nodes node3.couchbase.internal server-group.couchbase.com/zone=ServerGroup2
+ oc label --overwrite nodes node4.couchbase.internal server-group.couchbase.com/zone=ServerGroup2
+```
+
+Now deploy the new cluster:
+
+```
+oc create -f cluster-server-groups.yaml
+```
+
+This deploys a 9 node cluster with ServerGroups enabled. The distribution of nodes is setup so that each zone has 2 Data nodes and 1 Query node. This allows us to keep 2 replicas of the default bucket in each zone.
+
+![](img/9node-server-list.png)
 
 ## Cleanup
 
